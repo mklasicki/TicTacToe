@@ -17,15 +17,13 @@ public class Game {
 
 
         printStartMessage();
-
         createGrid();
-
         printGrid();
 
         while(count < 9) {
 
             if (checkIfSomeoneWon(grid)) {
-                System.out.println("End of game, someone has won!");
+                System.out.println("End of the game, player with " + mark + " has won!");
                 break;
             }
 
@@ -100,7 +98,6 @@ public class Game {
 
         }
 
-        System.out.println("No one won, there is a tie!");
     }
 
     public  void createGrid() {
@@ -146,11 +143,13 @@ public class Game {
 
     public static boolean checkIfSomeoneWon(String[][] grid) {
 
-        if ((grid[1][1].equals(grid[1][2]) && grid[1][1].equals(grid[1][3])) && !grid[1][2].equals(" ")) {
+        if ((grid[1][1].equals(grid[1][2]) && grid[1][1].equals(grid[1][3])) && !grid[1][1].equals(" ")) {
             return true;
         } else if ((grid[1][1].equals(grid[2][1]) && grid[2][1].equals(grid[3][1])) && !grid[1][2].equals(" ")) {
             return true;
         } else if ((grid[3][1].equals(grid[3][2]) && grid[3][2].equals(grid[3][3])) && !grid[3][1].equals(" ")) {
+            return true;
+        } else if ((grid[1][1].equals(grid[2][2]) && grid[2][2].equals(grid[3][3])) && !grid[1][1].equals(" ")) {
             return true;
         }
 
