@@ -44,8 +44,8 @@ public class MainWindow extends JFrame implements ActionListener {
 
         p1Name = new JLabel("Gracz 1: ");
         p2Name = new JLabel("Gracz 2: ");
-        p1NameText = new JLabel("Marcin");
-        p2NameText = new JLabel("Marcin");
+        p1NameText = new JLabel();
+        p2NameText = new JLabel();
 
         p1Name.setBounds(10, 10, 50, 20);
         p2Name.setBounds(10, 40, 50, 20);
@@ -134,8 +134,21 @@ public class MainWindow extends JFrame implements ActionListener {
             dialog.add(resetData);
             dialog.add(quit);
             dialog.setVisible(true);
+
+            submitPlayers.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String name1 = p1TextField.getText();
+                    String name2 = p2TextField.getText();
+                    p1NameText.setText(name1);
+                    p2NameText.setText(name2);
+                    dialog.dispose();
+
+                }
+            });
+
         }
 
-
     }
+
 }
