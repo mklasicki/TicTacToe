@@ -92,7 +92,7 @@ public class MainWindow extends JFrame implements ActionListener {
         JButton[] buttons = new JButton[9];
 
         for(int i = 0; i< buttons.length; i++) {
-            buttons[i] = new JButton("X");
+            buttons[i] = new JButton();
         }
 
         return buttons;
@@ -143,9 +143,25 @@ public class MainWindow extends JFrame implements ActionListener {
                     p1NameText.setText(name1);
                     p2NameText.setText(name2);
                     dialog.dispose();
-
                 }
             });
+
+           resetData.addActionListener(new ActionListener() {
+               @Override
+               public void actionPerformed(ActionEvent e) {
+                   p1TextField.setText("");
+                   p2TextField.setText("");
+               }
+
+           });
+
+
+           quit.addActionListener(new ActionListener() {
+               @Override
+               public void actionPerformed(ActionEvent e) {
+                   dialog.dispose();
+               }
+           });
 
         }
 
