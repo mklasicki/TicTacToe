@@ -42,6 +42,7 @@ public class PlayersDialog extends JDialog implements ActionListener {
 
         this.setModal(true);
         this.setLayout(null);
+        this.setTitle("Imiona graczy");
         this.setBounds(400, 400, 380, 160);
         this.add(p1Name);
         this.add(p2Name);

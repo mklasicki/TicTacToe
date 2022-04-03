@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+import com.marcin.model.Player;
+
 public class MainWindow extends JFrame implements ActionListener {
     JMenuBar mainMenuBar;
     JMenu optionsMenu;
@@ -15,6 +17,10 @@ public class MainWindow extends JFrame implements ActionListener {
     JLabel p1NameText;
     JLabel p2NameText;
     PlayersDialog playersDialog;
+    ClosingGameDialog closingGameDialog;
+    JButton[] buttons;
+    Player[] players;
+    int turn;
 
     private final int buttonHeight = 100;
     private final int buttonWidth = 100;
@@ -27,8 +33,12 @@ public class MainWindow extends JFrame implements ActionListener {
         setBounds(300, 300, 316, 462);
         setLayout(null);
 
+        players = createPlayers();
+        turn = 1;
         playersDialog = new PlayersDialog();
+        closingGameDialog = new ClosingGameDialog();
         playersDialog.initPlayerNamesDialog();
+        closingGameDialog.initEndGameDialog();
         mainMenuBar = new JMenuBar();
         optionsMenu = new JMenu("Opcje");
         newGame = new JMenuItem("Nowa Gra");
@@ -62,6 +72,8 @@ public class MainWindow extends JFrame implements ActionListener {
 
         addButtonsPanel(this);
 
+
+
         setVisible(true);
     }
 
@@ -71,7 +83,7 @@ public class MainWindow extends JFrame implements ActionListener {
         buttonsPanel.setLayout(null);
         buttonsPanel.setBounds(0, 100, 300, 300);
 
-        JButton[] buttons = generateButtons();
+        buttons = generateButtons();
 
         buttons[0].setBounds(0, 0, buttonWidth, buttonHeight);
         buttons[1].setBounds(100, 0, buttonWidth, buttonHeight);
@@ -85,6 +97,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         for(JButton button : buttons) {
             buttonsPanel.add(button);
+            button.addActionListener(this);
         }
 
         frame.add(buttonsPanel);
@@ -92,7 +105,7 @@ public class MainWindow extends JFrame implements ActionListener {
     }
 
     private JButton[] generateButtons() {
-        JButton[] buttons = new JButton[9];
+        buttons = new JButton[9];
 
         for(int i = 0; i< buttons.length; i++) {
             buttons[i] = new JButton();
@@ -111,6 +124,18 @@ public class MainWindow extends JFrame implements ActionListener {
            playersDialog.displayDialog();
            p1NameText.setText(getPlayerNames()[0]);
            p2NameText.setText(getPlayerNames()[1]);
+           setPlayers(p1NameText.getName(), p2NameText.getName());
+        }
+
+        if (e.getSource().getClass() == JButton.class) {
+            JButton button = (JButton)e.getSource();
+            int playerId =  getCurrentPlayerIndex(turn);
+            button.setText(players[playerId].getMark());
+            button.setEnabled(false);
+            if (turn == 9) {
+                closingGameDialog.displayDialog();
+            }
+            turn++;
         }
     }
 
@@ -118,5 +143,36 @@ public class MainWindow extends JFrame implements ActionListener {
         return playersDialog.getPlayerNames();
         }
 
+
+    private Player[] createPlayers() {
+        players = new Player[2];
+        players[0] = new Player(1,null);
+        players[1] = new Player(2,null);
+        return players;
     }
+
+    private void setPlayers(String playerOneName, String playerTwoName){
+        players[0].setName(p1NameText.getText());
+        players[0].setMark("X");
+        players[1].setName(p2NameText.getText());
+        players[1].setMark("O");
+    }
+
+    private int getCurrentPlayerIndex(int turn) {
+        if (turn == 1) {
+            return 0;
+        }
+
+        if (turn % 2 == 0) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+}
+
+
+
+
 

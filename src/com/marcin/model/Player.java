@@ -2,8 +2,9 @@ package com.marcin.model;
 
 public class Player {
 
-    private final int id;
-    private final String name;
+    private int id;
+    private String name;
+    private String mark;
 
     public Player(int id, String name) {
         this.id = id;
@@ -16,5 +17,17 @@ public class Player {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setMark(String mark) {
+        this.mark = mark;
+    }
+
+    public String getMark() {
+        return mark;
     }
 }
