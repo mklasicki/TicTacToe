@@ -6,6 +6,7 @@ import javax.swing.*;
 public class MainWindow extends JFrame {
     JMenuBar mainMenuBar;
     JMenu optionsMenu;
+    JMenuItem newGame;
     JMenuItem resetGame;
     JMenuItem quit;
     JLabel p1Name;
@@ -25,10 +26,12 @@ public class MainWindow extends JFrame {
         setBounds(300, 300, 316, 462);
         setLayout(null);
 
-        optionsMenu = new JMenu("Opcje");
         mainMenuBar = new JMenuBar();
+        optionsMenu = new JMenu("Opcje");
+        newGame = new JMenuItem("Nowa Gra");
         resetGame = new JMenuItem("Resetuj grę");
         quit = new JMenuItem("Wyjdź");
+        optionsMenu.add(newGame);
         optionsMenu.add(resetGame);
         optionsMenu.add(quit);
         mainMenuBar.add(optionsMenu);
