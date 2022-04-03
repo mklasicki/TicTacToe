@@ -14,6 +14,7 @@ public class MainWindow extends JFrame implements ActionListener {
     JLabel p2Name;
     JLabel p1NameText;
     JLabel p2NameText;
+    PlayersDialog playersDialog;
 
     private final int buttonHeight = 100;
     private final int buttonWidth = 100;
@@ -26,6 +27,8 @@ public class MainWindow extends JFrame implements ActionListener {
         setBounds(300, 300, 316, 462);
         setLayout(null);
 
+        playersDialog = new PlayersDialog();
+        playersDialog.initPlayerNamesDialog();
         mainMenuBar = new JMenuBar();
         optionsMenu = new JMenu("Opcje");
         newGame = new JMenuItem("Nowa Gra");
@@ -98,73 +101,22 @@ public class MainWindow extends JFrame implements ActionListener {
         return buttons;
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == quit) {
             this.dispose();
-        } else if(e.getSource() == newGame) {
-            JDialog dialog = new JDialog(this,"Nowa gra");
-            JLabel p1Name = new JLabel("Imię pierwszego gracza: ");
-            JLabel p2Name = new JLabel("Imie drugiego gracza: ");
-            JButton submitPlayers = new JButton("Zatwierdź");
-            JButton resetData = new JButton("Resetuj");
-            JButton quit = new JButton("Wyjdź");
-            JTextField p1TextField = new JTextField();
-            JTextField p2TextField = new JTextField();
+        }
 
-            p1Name.setBounds(10, 10, 200, 20);
-            p2Name.setBounds(10, 40, 200, 20);
+        if (e.getSource() == newGame) {
+           playersDialog.displayDialog();
+           p1NameText.setText(getPlayerNames()[0]);
+           p2NameText.setText(getPlayerNames()[1]);
+        }
+    }
 
-            p1TextField.setBounds(250, 10, 100, 20);
-            p2TextField.setBounds(250, 40, 100, 20);
-
-            submitPlayers.setBounds(10, 80, 100, 30);
-            resetData.setBounds(130, 80, 100, 30);
-            quit.setBounds(250, 80,100, 30);
-
-
-            dialog.setLayout(null);
-            dialog.setBounds(400, 400, 380, 160);
-            dialog.add(p1Name);
-            dialog.add(p2Name);
-            dialog.add(p1TextField);
-            dialog.add(p2TextField);
-            dialog.add(submitPlayers);
-            dialog.add(resetData);
-            dialog.add(quit);
-            dialog.setVisible(true);
-
-            submitPlayers.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String name1 = p1TextField.getText();
-                    String name2 = p2TextField.getText();
-                    p1NameText.setText(name1);
-                    p2NameText.setText(name2);
-                    dialog.dispose();
-                }
-            });
-
-           resetData.addActionListener(new ActionListener() {
-               @Override
-               public void actionPerformed(ActionEvent e) {
-                   p1TextField.setText("");
-                   p2TextField.setText("");
-               }
-
-           });
-
-
-           quit.addActionListener(new ActionListener() {
-               @Override
-               public void actionPerformed(ActionEvent e) {
-                   dialog.dispose();
-               }
-           });
-
+    private String[] getPlayerNames(){
+        return playersDialog.getPlayerNames();
         }
 
     }
 
-}
