@@ -124,6 +124,14 @@ public class MainWindow extends JFrame implements ActionListener {
         return buttons;
     }
 
+    public Player[] getPlayers() {
+        return players;
+    }
+
+    public ClosingGameDialog getClosingGameDialog() {
+        return closingGameDialog;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == quit) {
@@ -142,8 +150,9 @@ public class MainWindow extends JFrame implements ActionListener {
             JButton button = (JButton)e.getSource();
             int playerId =  getCurrentPlayerIndex(turn);
             button.setText(players[playerId].getMark());
-            button.setEnabled(false);
+            checkGame(getButtons(), getPlayers());
             if (turn == 9) {
+                closingGameDialog.label.setText("Remis!, nikt nie wygrywa, co chcesz zrobić?");
                 closingGameDialog.displayDialog();
             }
             turn++;
@@ -153,7 +162,6 @@ public class MainWindow extends JFrame implements ActionListener {
     private String[] getPlayerNames(){
         return playersDialog.getPlayerNames();
         }
-
 
     private Player[] createPlayers() {
         players = new Player[2];
@@ -179,6 +187,29 @@ public class MainWindow extends JFrame implements ActionListener {
         }
 
         return 0;
+    }
+
+    private void checkGame(JButton[] buttons, Player[] players){
+        if ((buttons[0].getText().equals(buttons[1].getText())) && (buttons[0].getText().equals(buttons[2].getText()))){
+            for(JButton button: buttons) {
+                button.setEnabled(false);
+            }
+            String winner = getPlayerNameByMark(buttons[0].getText(), players);
+            getClosingGameDialog().label.setText("Gratulacje!, wygrywa " + winner + " co chcesz zrobić?");
+            getClosingGameDialog().displayDialog();
+        }
+    }
+
+    private String getPlayerNameByMark(String mark, Player[] players) {
+        String winnerName = null;
+
+        for(Player player: players) {
+            if (player.getMark().equals(mark)){
+                winnerName = player.getName();
+            }
+        }
+
+        return winnerName;
     }
 
 }

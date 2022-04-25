@@ -13,7 +13,7 @@ public class ClosingGameDialog  extends JDialog {
         this.setLayout(null);
         this.setTitle("Koniec gry");
         this.setBounds(400, 400, 380, 160);
-        label = new JLabel("Koniec gry, wygrywa .....! Co chcesz zrobić?");
+        label = new JLabel();
         newGame = new JButton("Nowa gra");
         quit = new JButton("Wyjdź");
 
