@@ -21,10 +21,7 @@ public class MainWindow extends JFrame implements ActionListener {
     JButton[] buttons;
     Player[] players;
     int turn;
-
-    private final int buttonHeight = 100;
-    private final int buttonWidth = 100;
-
+    boolean isGameActive;
 
     public void init() {
 
@@ -35,6 +32,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         players = createPlayers();
         turn = 1;
+        isGameActive = false;
         playersDialog = new PlayersDialog();
         closingGameDialog = new ClosingGameDialog();
         playersDialog.initPlayerNamesDialog();
@@ -72,13 +70,14 @@ public class MainWindow extends JFrame implements ActionListener {
 
         addButtonsPanel(this);
 
-
-
         setVisible(true);
     }
 
 
     private void addButtonsPanel(JFrame frame){
+         int buttonHeight = 100;
+         int buttonWidth = 100;
+
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(null);
         buttonsPanel.setBounds(0, 100, 300, 300);
@@ -96,6 +95,7 @@ public class MainWindow extends JFrame implements ActionListener {
         buttons[8].setBounds(200, 200, buttonWidth, buttonHeight);
 
         for(JButton button : buttons) {
+            button.setEnabled(false);
             buttonsPanel.add(button);
             button.addActionListener(this);
         }
@@ -114,6 +114,16 @@ public class MainWindow extends JFrame implements ActionListener {
         return buttons;
     }
 
+    private void activateButtons(JButton[] buttons) {
+            for(JButton button : buttons) {
+                button.setEnabled(true);
+            }
+    }
+
+    public JButton[] getButtons() {
+        return buttons;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == quit) {
@@ -125,6 +135,7 @@ public class MainWindow extends JFrame implements ActionListener {
            p1NameText.setText(getPlayerNames()[0]);
            p2NameText.setText(getPlayerNames()[1]);
            setPlayers(p1NameText.getName(), p2NameText.getName());
+           activateButtons(getButtons());
         }
 
         if (e.getSource().getClass() == JButton.class) {
