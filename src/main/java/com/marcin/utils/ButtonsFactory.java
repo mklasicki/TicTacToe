@@ -6,7 +6,4 @@ public interface ButtonsFactory {
 
     JButton[] generateButtons();
 
-//    void addButtonsPanel(JFrame frame);
-//
-    void activateButtons(JButton[] buttons);
 }

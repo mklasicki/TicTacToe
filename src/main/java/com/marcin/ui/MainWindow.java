@@ -7,6 +7,8 @@ import javax.swing.*;
 import com.marcin.model.Player;
 import com.marcin.utils.ButtonsFactory;
 import com.marcin.utils.ButtonsFactoryImpl;
+import com.marcin.utils.ButtonsUtils;
+import com.marcin.utils.ButtonsUtilsImpl;
 import com.marcin.utils.PlayerUtil;
 
 public class MainWindow extends JFrame implements ActionListener {
@@ -24,9 +26,11 @@ public class MainWindow extends JFrame implements ActionListener {
     JButton[] buttons;
     Player[] players;
     int turn;
-    boolean isGameActive;
+
     ButtonsFactory buttonsFactory = new ButtonsFactoryImpl();
+    ButtonsUtils buttonsUtils = new ButtonsUtilsImpl();
     PlayerUtil playerUtil = new PlayerUtil();
+
 
     public void init() {
 
@@ -34,81 +38,15 @@ public class MainWindow extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(300, 300, 316, 462);
         setLayout(null);
+
+        initDialogs();
+        initMenu();
+        initLabels();
+        buttons = buttonsFactory.generateButtons();
         players = playerUtil.createPlayers();
-        turn = 1;
-        isGameActive = false;
-        playersDialog = new PlayersDialog();
-        closingGameDialog = new ClosingGameDialog();
-        playersDialog.initPlayerNamesDialog();
-        closingGameDialog.initEndGameDialog();
-        mainMenuBar = new JMenuBar();
-        optionsMenu = new JMenu("Opcje");
-        newGame = new JMenuItem("Nowa Gra");
-        resetGame = new JMenuItem("Resetuj grę");
-        quit = new JMenuItem("Wyjdź");
-
-        quit.addActionListener(this);
-        newGame.addActionListener(this);
-
-        optionsMenu.add(newGame);
-        optionsMenu.add(resetGame);
-        optionsMenu.add(quit);
-        mainMenuBar.add(optionsMenu);
-        setJMenuBar(mainMenuBar);
-
-        p1Name = new JLabel("Gracz 1: ");
-        p2Name = new JLabel("Gracz 2: ");
-        p1NameText = new JLabel();
-        p2NameText = new JLabel();
-
-        p1Name.setBounds(10, 10, 50, 20);
-        p2Name.setBounds(10, 40, 50, 20);
-        p1NameText.setBounds(70, 10, 150, 20);
-        p2NameText.setBounds(70, 40, 150, 20);
-
-        add(p1Name);
-        add(p2Name);
-        add(p1NameText);
-        add(p2NameText);
-
-        addButtonsPanel(this);
+        add(buttonsUtils.ButtonsPanel(buttons));
 
         setVisible(true);
-    }
-
-    //TODO: add button factory, make interface and implementation for it
-    private void addButtonsPanel(JFrame frame){
-         int buttonHeight = 100;
-         int buttonWidth = 100;
-
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(null);
-        buttonsPanel.setBounds(0, 100, 300, 300);
-
-        buttons = buttonsFactory.generateButtons();
-
-        buttons[0].setBounds(0, 0, buttonWidth, buttonHeight);
-        buttons[1].setBounds(100, 0, buttonWidth, buttonHeight);
-        buttons[2].setBounds(200, 0, buttonWidth, buttonHeight);
-        buttons[3].setBounds(0, 100, buttonWidth, buttonHeight);
-        buttons[4].setBounds(100, 100, buttonWidth, buttonHeight);
-        buttons[5].setBounds(200, 100, buttonWidth, buttonHeight);
-        buttons[6].setBounds(0, 200, buttonWidth, buttonHeight);
-        buttons[7].setBounds(100, 200, buttonWidth, buttonHeight);
-        buttons[8].setBounds(200, 200, buttonWidth, buttonHeight);
-
-        for(JButton button : buttons) {
-            button.setEnabled(false);
-            buttonsPanel.add(button);
-            button.addActionListener(this);
-        }
-
-        frame.add(buttonsPanel);
-
-    }
-
-    public JButton[] getButtons() {
-        return buttons;
     }
 
     public ClosingGameDialog getClosingGameDialog() {
@@ -122,11 +60,12 @@ public class MainWindow extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == newGame) {
+            turn = 1;
            playersDialog.displayDialog();
            p1NameText.setText(playerUtil.getPlayerNames(playersDialog)[0]);
            p2NameText.setText(playerUtil.getPlayerNames(playersDialog)[1]);
            setPlayers(p1NameText.getName(), p2NameText.getName());
-           buttonsFactory.activateButtons(getButtons());
+           initButtons(getButtons());
         }
 
         if (e.getSource().getClass() == JButton.class) {
@@ -159,6 +98,60 @@ public class MainWindow extends JFrame implements ActionListener {
             String winner = playerUtil.getPlayerNameByMark(buttons[0].getText(), players);
             getClosingGameDialog().label.setText("Gratulacje!, wygrywa " + winner + " co chcesz zrobić?");
             getClosingGameDialog().displayDialog();
+        }
+    }
+
+    private void initDialogs() {
+        playersDialog = new PlayersDialog();
+        closingGameDialog = new ClosingGameDialog();
+        playersDialog.initPlayerNamesDialog();
+        closingGameDialog.initEndGameDialog();
+    }
+
+    private void initMenu(){
+        mainMenuBar = new JMenuBar();
+        optionsMenu = new JMenu("Opcje");
+        newGame = new JMenuItem("Nowa Gra");
+        resetGame = new JMenuItem("Resetuj grę");
+        quit = new JMenuItem("Wyjdź");
+
+        quit.addActionListener(this);
+        newGame.addActionListener(this);
+
+        optionsMenu.add(newGame);
+        optionsMenu.add(resetGame);
+        optionsMenu.add(quit);
+        mainMenuBar.add(optionsMenu);
+
+        setJMenuBar(mainMenuBar);
+    }
+
+    private void initLabels() {
+
+        p1Name = new JLabel("Gracz 1: ");
+        p2Name = new JLabel("Gracz 2: ");
+        p1NameText = new JLabel();
+        p2NameText = new JLabel();
+
+        p1Name.setBounds(10, 10, 50, 20);
+        p2Name.setBounds(10, 40, 50, 20);
+        p1NameText.setBounds(70, 10, 150, 20);
+        p2NameText.setBounds(70, 40, 150, 20);
+
+        add(p1Name);
+        add(p2Name);
+        add(p1NameText);
+        add(p2NameText);
+    }
+
+    public JButton[] getButtons() {
+        return buttons;
+    }
+
+    private void initButtons(JButton[] buttons) {
+        buttonsUtils.activateButtons(buttons);
+        for (JButton button : buttons) {
+            button.addActionListener(this);
         }
     }
 

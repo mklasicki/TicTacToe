@@ -42,8 +42,6 @@ public class PlayerUtil {
         return playersDialog.getPlayerNames();
     }
 
-
-
     public Player[] getPlayers() {
         return players;
     }
