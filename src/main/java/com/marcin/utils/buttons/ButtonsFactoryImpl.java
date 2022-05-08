@@ -2,8 +2,6 @@ package com.marcin.utils.buttons;
 
 import javax.swing.*;
 
-import com.marcin.utils.buttons.ButtonsFactory;
-
 public class ButtonsFactoryImpl implements ButtonsFactory {
 
     @Override

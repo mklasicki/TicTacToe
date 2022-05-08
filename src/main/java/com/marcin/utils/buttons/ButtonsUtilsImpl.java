@@ -3,13 +3,15 @@ package com.marcin.utils.buttons;
 import java.awt.*;
 import javax.swing.*;
 
+import com.marcin.consts.UIConsts;
+
 public class ButtonsUtilsImpl implements ButtonsUtils {
 
     @Override
     public JPanel ButtonsPanel(JButton[] buttons) {
 
-            int buttonHeight = 100;
-            int buttonWidth = 100;
+            int buttonHeight = UIConsts.BUTTON_HEIGHT;
+            int buttonWidth = UIConsts.BUTTON_WIDTH;
 
             JPanel buttonsPanel = new JPanel();
             buttonsPanel.setLayout(null);
@@ -40,4 +42,12 @@ public class ButtonsUtilsImpl implements ButtonsUtils {
             button.setEnabled(true);
         }
     }
+
+    @Override
+    public void disableButtons(JButton[] buttons) {
+        for(JButton button: buttons) {
+            button.setEnabled(false);
+        }
+    }
+
 }
