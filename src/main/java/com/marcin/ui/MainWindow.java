@@ -6,11 +6,11 @@ import javax.swing.*;
 
 import com.marcin.consts.UIConsts;
 import com.marcin.model.Player;
-import com.marcin.utils.ButtonsFactory;
-import com.marcin.utils.ButtonsFactoryImpl;
-import com.marcin.utils.ButtonsUtils;
-import com.marcin.utils.ButtonsUtilsImpl;
-import com.marcin.utils.PlayerUtil;
+import com.marcin.utils.buttons.ButtonsFactory;
+import com.marcin.utils.buttons.ButtonsFactoryImpl;
+import com.marcin.utils.buttons.ButtonsUtils;
+import com.marcin.utils.buttons.ButtonsUtilsImpl;
+import com.marcin.utils.player.PlayerUtil;
 
 public class MainWindow extends JFrame implements ActionListener {
     JMenuBar mainMenuBar;

@@ -1,4 +1,4 @@
-package com.marcin.utils;
+package com.marcin.utils.buttons;
 
 import javax.swing.*;
 

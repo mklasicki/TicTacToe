@@ -1,4 +1,4 @@
-package com.marcin.utils;
+package com.marcin.utils.engine;
 
 import javax.swing.*;
 

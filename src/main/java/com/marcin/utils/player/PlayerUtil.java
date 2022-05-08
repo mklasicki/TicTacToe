@@ -1,4 +1,4 @@
-package com.marcin.utils;
+package com.marcin.utils.player;
 
 import com.marcin.model.Player;
 import com.marcin.ui.PlayersDialog;

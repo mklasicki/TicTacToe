@@ -1,9 +1,7 @@
-package com.marcin.utils;
+package com.marcin.utils.buttons;
 
 import java.awt.*;
 import javax.swing.*;
-
-import com.sun.javafx.tk.FontLoader;
 
 public class ButtonsUtilsImpl implements ButtonsUtils {
 
