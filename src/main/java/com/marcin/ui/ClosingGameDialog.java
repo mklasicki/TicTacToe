@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class ClosingGameDialog  extends JDialog {
 
+    //TODO: create action listener for buttons
     JLabel label;
     JButton newGame;
     JButton quit;

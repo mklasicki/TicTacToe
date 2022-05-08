@@ -73,7 +73,7 @@ public class MainWindow extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-
+    //TODO: add button factory, make interface and implementation for it
     private void addButtonsPanel(JFrame frame){
          int buttonHeight = 100;
          int buttonWidth = 100;
@@ -189,27 +189,17 @@ public class MainWindow extends JFrame implements ActionListener {
         return 0;
     }
 
+    //TODO: add more conditions to game engine
     private void checkGame(JButton[] buttons, Player[] players){
         if ((buttons[0].getText().equals(buttons[1].getText())) && (buttons[0].getText().equals(buttons[2].getText()))){
             for(JButton button: buttons) {
                 button.setEnabled(false);
             }
-            String winner = getPlayerNameByMark(buttons[0].getText(), players);
+           // String winner = getPlayerNameByMark(buttons[0].getText(), players);
+            String winner = Player.getPlayerNameByMark(buttons[0].getText(), players);
             getClosingGameDialog().label.setText("Gratulacje!, wygrywa " + winner + " co chcesz zrobić?");
             getClosingGameDialog().displayDialog();
         }
-    }
-
-    private String getPlayerNameByMark(String mark, Player[] players) {
-        String winnerName = null;
-
-        for(Player player: players) {
-            if (player.getMark().equals(mark)){
-                winnerName = player.getName();
-            }
-        }
-
-        return winnerName;
     }
 
 }

@@ -30,4 +30,16 @@ public class Player {
     public String getMark() {
         return mark;
     }
+
+    public static String getPlayerNameByMark(String mark, Player[] players) {
+        String winnerName = null;
+
+        for(Player player: players) {
+            if (player.getMark().equals(mark)){
+                winnerName = player.getName();
+            }
+        }
+
+        return winnerName;
+    }
 }
