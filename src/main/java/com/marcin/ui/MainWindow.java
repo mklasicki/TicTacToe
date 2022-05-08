@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import com.marcin.model.Player;
+import com.marcin.utils.ButtonsFactory;
+import com.marcin.utils.ButtonsFactoryImpl;
+import com.marcin.utils.PlayerUtil;
 
 public class MainWindow extends JFrame implements ActionListener {
     JMenuBar mainMenuBar;
@@ -22,6 +25,8 @@ public class MainWindow extends JFrame implements ActionListener {
     Player[] players;
     int turn;
     boolean isGameActive;
+    ButtonsFactory buttonsFactory = new ButtonsFactoryImpl();
+    PlayerUtil playerUtil = new PlayerUtil();
 
     public void init() {
 
@@ -29,8 +34,7 @@ public class MainWindow extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(300, 300, 316, 462);
         setLayout(null);
-
-        players = createPlayers();
+        players = playerUtil.createPlayers();
         turn = 1;
         isGameActive = false;
         playersDialog = new PlayersDialog();
@@ -82,7 +86,7 @@ public class MainWindow extends JFrame implements ActionListener {
         buttonsPanel.setLayout(null);
         buttonsPanel.setBounds(0, 100, 300, 300);
 
-        buttons = generateButtons();
+        buttons = buttonsFactory.generateButtons();
 
         buttons[0].setBounds(0, 0, buttonWidth, buttonHeight);
         buttons[1].setBounds(100, 0, buttonWidth, buttonHeight);
@@ -102,22 +106,6 @@ public class MainWindow extends JFrame implements ActionListener {
 
         frame.add(buttonsPanel);
 
-    }
-
-    private JButton[] generateButtons() {
-        buttons = new JButton[9];
-
-        for(int i = 0; i< buttons.length; i++) {
-            buttons[i] = new JButton();
-        }
-
-        return buttons;
-    }
-
-    private void activateButtons(JButton[] buttons) {
-            for(JButton button : buttons) {
-                button.setEnabled(true);
-            }
     }
 
     public JButton[] getButtons() {
@@ -143,12 +131,12 @@ public class MainWindow extends JFrame implements ActionListener {
            p1NameText.setText(getPlayerNames()[0]);
            p2NameText.setText(getPlayerNames()[1]);
            setPlayers(p1NameText.getName(), p2NameText.getName());
-           activateButtons(getButtons());
+           buttonsFactory.activateButtons(getButtons());
         }
 
         if (e.getSource().getClass() == JButton.class) {
             JButton button = (JButton)e.getSource();
-            int playerId =  getCurrentPlayerIndex(turn);
+            int playerId =  playerUtil.getCurrentPlayerIndex(turn);
             button.setText(players[playerId].getMark());
             checkGame(getButtons(), getPlayers());
             if (turn == 9) {
@@ -163,30 +151,11 @@ public class MainWindow extends JFrame implements ActionListener {
         return playersDialog.getPlayerNames();
         }
 
-    private Player[] createPlayers() {
-        players = new Player[2];
-        players[0] = new Player(1,null);
-        players[1] = new Player(2,null);
-        return players;
-    }
-
     private void setPlayers(String playerOneName, String playerTwoName){
         players[0].setName(p1NameText.getText());
         players[0].setMark("X");
         players[1].setName(p2NameText.getText());
         players[1].setMark("O");
-    }
-
-    private int getCurrentPlayerIndex(int turn) {
-        if (turn == 1) {
-            return 0;
-        }
-
-        if (turn % 2 == 0) {
-            return 1;
-        }
-
-        return 0;
     }
 
     //TODO: add more conditions to game engine
@@ -196,7 +165,7 @@ public class MainWindow extends JFrame implements ActionListener {
                 button.setEnabled(false);
             }
            // String winner = getPlayerNameByMark(buttons[0].getText(), players);
-            String winner = Player.getPlayerNameByMark(buttons[0].getText(), players);
+            String winner = playerUtil.getPlayerNameByMark(buttons[0].getText(), players);
             getClosingGameDialog().label.setText("Gratulacje!, wygrywa " + winner + " co chcesz zrobić?");
             getClosingGameDialog().displayDialog();
         }
