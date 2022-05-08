@@ -50,7 +50,6 @@ public class MainWindow extends JFrame implements ActionListener {
         quit.addActionListener(this);
         newGame.addActionListener(this);
 
-
         optionsMenu.add(newGame);
         optionsMenu.add(resetGame);
         optionsMenu.add(quit);
@@ -112,10 +111,6 @@ public class MainWindow extends JFrame implements ActionListener {
         return buttons;
     }
 
-    public Player[] getPlayers() {
-        return players;
-    }
-
     public ClosingGameDialog getClosingGameDialog() {
         return closingGameDialog;
     }
@@ -128,8 +123,8 @@ public class MainWindow extends JFrame implements ActionListener {
 
         if (e.getSource() == newGame) {
            playersDialog.displayDialog();
-           p1NameText.setText(getPlayerNames()[0]);
-           p2NameText.setText(getPlayerNames()[1]);
+           p1NameText.setText(playerUtil.getPlayerNames(playersDialog)[0]);
+           p2NameText.setText(playerUtil.getPlayerNames(playersDialog)[1]);
            setPlayers(p1NameText.getName(), p2NameText.getName());
            buttonsFactory.activateButtons(getButtons());
         }
@@ -138,7 +133,7 @@ public class MainWindow extends JFrame implements ActionListener {
             JButton button = (JButton)e.getSource();
             int playerId =  playerUtil.getCurrentPlayerIndex(turn);
             button.setText(players[playerId].getMark());
-            checkGame(getButtons(), getPlayers());
+            checkGame(getButtons(), playerUtil.getPlayers());
             if (turn == 9) {
                 closingGameDialog.label.setText("Remis!, nikt nie wygrywa, co chcesz zrobić?");
                 closingGameDialog.displayDialog();
@@ -147,9 +142,6 @@ public class MainWindow extends JFrame implements ActionListener {
         }
     }
 
-    private String[] getPlayerNames(){
-        return playersDialog.getPlayerNames();
-        }
 
     private void setPlayers(String playerOneName, String playerTwoName){
         players[0].setName(p1NameText.getText());
@@ -164,7 +156,6 @@ public class MainWindow extends JFrame implements ActionListener {
             for(JButton button: buttons) {
                 button.setEnabled(false);
             }
-           // String winner = getPlayerNameByMark(buttons[0].getText(), players);
             String winner = playerUtil.getPlayerNameByMark(buttons[0].getText(), players);
             getClosingGameDialog().label.setText("Gratulacje!, wygrywa " + winner + " co chcesz zrobić?");
             getClosingGameDialog().displayDialog();

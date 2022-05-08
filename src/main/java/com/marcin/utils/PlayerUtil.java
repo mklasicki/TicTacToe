@@ -1,11 +1,14 @@
 package com.marcin.utils;
 
 import com.marcin.model.Player;
+import com.marcin.ui.PlayersDialog;
 
 public class PlayerUtil {
 
+    private Player[] players;
+
     public Player[] createPlayers() {
-        Player[] players = new Player[2];
+        players = new Player[2];
         players[0] = new Player(1,null);
         players[1] = new Player(2,null);
         return players;
@@ -33,6 +36,16 @@ public class PlayerUtil {
         }
 
         return 0;
+    }
+
+    public String[] getPlayerNames(PlayersDialog playersDialog){
+        return playersDialog.getPlayerNames();
+    }
+
+
+
+    public Player[] getPlayers() {
+        return players;
     }
 
 }
