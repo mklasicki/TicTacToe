@@ -1,8 +1,8 @@
-package com.marcin.utils;
+package com.marcin.utils.buttons;
 
 import javax.swing.*;
 
-public class ButtonsFactoryImpl implements ButtonsFactory{
+public class ButtonsFactoryImpl implements ButtonsFactory {
 
     @Override
     public JButton[] generateButtons() {
