@@ -1,6 +1,9 @@
 package com.marcin.utils;
 
+import java.awt.*;
 import javax.swing.*;
+
+import com.sun.javafx.tk.FontLoader;
 
 public class ButtonsUtilsImpl implements ButtonsUtils {
 
@@ -26,6 +29,7 @@ public class ButtonsUtilsImpl implements ButtonsUtils {
 
             for(JButton button : buttons) {
                 button.setEnabled(false);
+                button.setFont(new Font("Arial,", Font.PLAIN, 35));
                 buttonsPanel.add(button);
             }
 

@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+import com.marcin.consts.UIConsts;
 import com.marcin.model.Player;
 import com.marcin.utils.ButtonsFactory;
 import com.marcin.utils.ButtonsFactoryImpl;
@@ -36,7 +37,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         setTitle("Kółko i krzyżyk");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(300, 300, 316, 462);
+        setBounds(UIConsts.X_POS, UIConsts.Y_POS, UIConsts.APP_WIDTH, UIConsts.APP_HEIGHT);
         setLayout(null);
 
         initDialogs();
