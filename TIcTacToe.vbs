@@ -8,4 +8,4 @@ AppRunCmd = "java -jar " & chr(34) & Path & AppName & chr(34)
 
 Set WshShell = CreateObject("WScript.Shell")
 
-WshShell.Run AppRunCmd
+WshShell.Run "java -jar target\TicTacToe.jar"
