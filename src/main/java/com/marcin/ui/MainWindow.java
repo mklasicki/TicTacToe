@@ -6,10 +6,10 @@ import javax.swing.*;
 
 import com.marcin.consts.UIConsts;
 import com.marcin.model.Player;
-import com.marcin.utils.buttons.ButtonsFactory;
-import com.marcin.utils.buttons.ButtonsFactoryImpl;
-import com.marcin.utils.buttons.ButtonsUtils;
-import com.marcin.utils.buttons.ButtonsUtilsImpl;
+import com.marcin.ui.buttons.Buttons;
+import com.marcin.ui.buttons.ButtonsFactory;
+import com.marcin.ui.buttons.ButtonsUtils;
+import com.marcin.ui.buttons.ButtonsUtilsImpl;
 import com.marcin.utils.player.PlayerUtil;
 
 public class MainWindow extends JFrame implements ActionListener {
@@ -28,7 +28,7 @@ public class MainWindow extends JFrame implements ActionListener {
     Player[] players;
     int turn;
 
-    ButtonsFactory buttonsFactory = new ButtonsFactoryImpl();
+    Buttons buttonsFactory = new ButtonsFactory();
     ButtonsUtils buttonsUtils = new ButtonsUtilsImpl();
     PlayerUtil playerUtil = new PlayerUtil();
 
@@ -43,10 +43,11 @@ public class MainWindow extends JFrame implements ActionListener {
         initDialogs();
         initMenu();
         initLabels();
-        buttons = buttonsFactory.generateButtons();
+        initButtons();
+        //buttons = buttonsFactory.generateButtons(9);
         players = playerUtil.createPlayers();
-        add(buttonsUtils.ButtonsPanel(buttons));
-
+        //add(buttonsUtils.ButtonsPanel(buttons));
+        //this.pack();
         setVisible(true);
     }
 
@@ -148,6 +149,14 @@ public class MainWindow extends JFrame implements ActionListener {
             button.addActionListener(this);
         }
     }
+
+    private void initButtons(){
+        Buttons buttons1 = new ButtonsFactory();
+        JButton[] buttons = buttons1.generateButtons(9);
+        buttonsFactory.addButtons(this, buttons);
+    }
+
+
 
     private void endGameWithWinner(String winner) {
         getClosingGameDialog().label.setText("Gratulacje!, wygrywa " + winner + " co chcesz zrobić?");
