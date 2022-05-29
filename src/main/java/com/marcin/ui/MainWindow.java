@@ -28,12 +28,11 @@ public class MainWindow extends JFrame implements ActionListener {
     int turn;
 
     Buttons buttonsFactory = new ButtonsFactory();
-
     PlayerUtil playerUtil = new PlayerUtil();
 
+    LabelPanel labelPanel = new LabelPanel(this);
 
     public void init() {
-        new LabelPanel(this);
         initDialogs();
         initMenu();
         initButtons();
@@ -51,14 +50,13 @@ public class MainWindow extends JFrame implements ActionListener {
             this.dispose();
         }
 
-//        if (e.getSource() == newGame) {
-//            turn = 1;
-//           playersDialog.displayDialog();
-//           p1NameText.setText(playerUtil.getPlayerNames(playersDialog)[0]);
-//           p2NameText.setText(playerUtil.getPlayerNames(playersDialog)[1]);
-//           setPlayers(p1NameText.getName(), p2NameText.getName());
-//           initButtons(getButtons());
-//        }
+        if (e.getSource() == newGame) {
+            turn = 1;
+           playersDialog.displayDialog();
+           labelPanel.setP1NameText(playerUtil.getPlayerNames(playersDialog)[0]);
+           labelPanel.setP2NameText(playerUtil.getPlayerNames(playersDialog)[1]);            setPlayers(p1NameText.getName(), p2NameText.getName());
+           buttonsFactory.activateButtons();
+        }
 
         if (e.getSource().getClass() == JButton.class) {
             JButton button = (JButton)e.getSource();
