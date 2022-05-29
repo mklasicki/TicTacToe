@@ -4,10 +4,14 @@ import javax.swing.*;
 
 public interface Buttons {
 
-    JButton[] generateButtons(int buttonsNumber);
+    void generateButtons();
 
-    void addButtons(JFrame frame, JButton[] buttons);
+    void addButtons(JFrame frame);
 
     void addButton(JPanel panel, JButton button);
+
+    void activateButtons();
+
+    void disableButtons();
 
 }

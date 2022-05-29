@@ -1,6 +1,5 @@
 package com.marcin.ui;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -9,8 +8,6 @@ import com.marcin.consts.UIConsts;
 import com.marcin.model.Player;
 import com.marcin.ui.buttons.Buttons;
 import com.marcin.ui.buttons.ButtonsFactory;
-import com.marcin.ui.buttons.ButtonsUtils;
-import com.marcin.ui.buttons.ButtonsUtilsImpl;
 import com.marcin.ui.labels.LabelPanel;
 import com.marcin.utils.player.PlayerUtil;
 
@@ -31,7 +28,7 @@ public class MainWindow extends JFrame implements ActionListener {
     int turn;
 
     Buttons buttonsFactory = new ButtonsFactory();
-    ButtonsUtils buttonsUtils = new ButtonsUtilsImpl();
+
     PlayerUtil playerUtil = new PlayerUtil();
 
 
@@ -81,9 +78,6 @@ public class MainWindow extends JFrame implements ActionListener {
         setBounds(UIConsts.X_POS, UIConsts.Y_POS, UIConsts.APP_WIDTH, UIConsts.APP_HEIGHT);
         setVisible(true);
     }
-    public JButton[] getButtons() {
-        return buttons;
-    }
 
     private void setPlayers(String playerOneName, String playerTwoName){
         players[0].setName(p1NameText.getText());
@@ -124,9 +118,7 @@ public class MainWindow extends JFrame implements ActionListener {
     }
 
     private void initButtons(){
-        Buttons buttons1 = new ButtonsFactory();
-        JButton[] buttons = buttons1.generateButtons(9);
-        buttonsFactory.addButtons(this, buttons);
+        buttonsFactory.addButtons(this);
     }
 
 
@@ -145,7 +137,7 @@ public class MainWindow extends JFrame implements ActionListener {
         if ((buttons[0].getText().equals(buttons[1].getText()))
             && (buttons[0].getText().equals(buttons[2].getText()))
             && !buttons[0].getText().isEmpty()){
-            buttonsUtils.disableButtons(getButtons());
+            buttonsFactory.disableButtons();
             String winner = playerUtil.getPlayerNameByMark(buttons[0].getText(), players);
             endGameWithWinner(winner);
         }else if ((buttons[3].getText().equals(buttons[4].getText()))
@@ -166,7 +158,7 @@ public class MainWindow extends JFrame implements ActionListener {
         if ((buttons[0].getText().equals(buttons[3].getText()))
             && (buttons[0].getText().equals(buttons[6].getText()))
             && !buttons[0].getText().isEmpty()){
-            buttonsUtils.disableButtons(getButtons());
+            buttonsFactory.disableButtons();
             String winner = playerUtil.getPlayerNameByMark(buttons[0].getText(), players);
             endGameWithWinner(winner);
         }else if ((buttons[1].getText().equals(buttons[4].getText()))
@@ -186,7 +178,7 @@ public class MainWindow extends JFrame implements ActionListener {
         if ((buttons[0].getText().equals(buttons[4].getText()))
             && (buttons[0].getText().equals(buttons[8].getText()))
             && !buttons[0].getText().isEmpty()) {
-            buttonsUtils.disableButtons(getButtons());
+            buttonsFactory.disableButtons();
             String winner = playerUtil.getPlayerNameByMark(buttons[0].getText(), players);
             endGameWithWinner(winner);
         } else if ((buttons[2].getText().equals(buttons[4].getText()))
