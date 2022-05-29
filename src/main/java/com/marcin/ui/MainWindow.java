@@ -1,5 +1,6 @@
 package com.marcin.ui;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -10,18 +11,19 @@ import com.marcin.ui.buttons.Buttons;
 import com.marcin.ui.buttons.ButtonsFactory;
 import com.marcin.ui.buttons.ButtonsUtils;
 import com.marcin.ui.buttons.ButtonsUtilsImpl;
+import com.marcin.ui.labels.LabelPanel;
 import com.marcin.utils.player.PlayerUtil;
 
 public class MainWindow extends JFrame implements ActionListener {
+
+    JLabel p1NameText;
+    JLabel p2NameText;
     JMenuBar mainMenuBar;
     JMenu optionsMenu;
     JMenuItem newGame;
     JMenuItem resetGame;
     JMenuItem quit;
-    JLabel p1Name;
-    JLabel p2Name;
-    JLabel p1NameText;
-    JLabel p2NameText;
+
     PlayersDialog playersDialog;
     ClosingGameDialog closingGameDialog;
     JButton[] buttons;
@@ -34,21 +36,12 @@ public class MainWindow extends JFrame implements ActionListener {
 
 
     public void init() {
-
-        setTitle(UIConsts.APP_TITLE);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(UIConsts.X_POS, UIConsts.Y_POS, UIConsts.APP_WIDTH, UIConsts.APP_HEIGHT);
-        setLayout(null);
-
+        new LabelPanel(this);
         initDialogs();
         initMenu();
-        initLabels();
         initButtons();
-        //buttons = buttonsFactory.generateButtons(9);
         players = playerUtil.createPlayers();
-        //add(buttonsUtils.ButtonsPanel(buttons));
-        //this.pack();
-        setVisible(true);
+        initGraphics();
     }
 
     public ClosingGameDialog getClosingGameDialog() {
@@ -61,14 +54,14 @@ public class MainWindow extends JFrame implements ActionListener {
             this.dispose();
         }
 
-        if (e.getSource() == newGame) {
-            turn = 1;
-           playersDialog.displayDialog();
-           p1NameText.setText(playerUtil.getPlayerNames(playersDialog)[0]);
-           p2NameText.setText(playerUtil.getPlayerNames(playersDialog)[1]);
-           setPlayers(p1NameText.getName(), p2NameText.getName());
-           initButtons(getButtons());
-        }
+//        if (e.getSource() == newGame) {
+//            turn = 1;
+//           playersDialog.displayDialog();
+//           p1NameText.setText(playerUtil.getPlayerNames(playersDialog)[0]);
+//           p2NameText.setText(playerUtil.getPlayerNames(playersDialog)[1]);
+//           setPlayers(p1NameText.getName(), p2NameText.getName());
+//           initButtons(getButtons());
+//        }
 
         if (e.getSource().getClass() == JButton.class) {
             JButton button = (JButton)e.getSource();
@@ -82,6 +75,12 @@ public class MainWindow extends JFrame implements ActionListener {
         }
     }
 
+    private void initGraphics(){
+        setTitle(UIConsts.APP_TITLE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(UIConsts.X_POS, UIConsts.Y_POS, UIConsts.APP_WIDTH, UIConsts.APP_HEIGHT);
+        setVisible(true);
+    }
     public JButton[] getButtons() {
         return buttons;
     }
@@ -91,7 +90,6 @@ public class MainWindow extends JFrame implements ActionListener {
         players[0].setMark("X");
         players[1].setName(p2NameText.getText());
         players[1].setMark("O");
-
     }
 
     private void checkGame(){
@@ -125,31 +123,6 @@ public class MainWindow extends JFrame implements ActionListener {
         setJMenuBar(mainMenuBar);
     }
 
-    private void initLabels() {
-        p1Name = new JLabel("Gracz 1: ");
-        p2Name = new JLabel("Gracz 2: ");
-        p1NameText = new JLabel();
-        p2NameText = new JLabel();
-
-        p1Name.setBounds(10, 10, 50, 20);
-        p2Name.setBounds(10, 40, 50, 20);
-        p1NameText.setBounds(70, 10, 150, 20);
-        p2NameText.setBounds(70, 40, 150, 20);
-
-        add(p1Name);
-        add(p2Name);
-        add(p1NameText);
-        add(p2NameText);
-    }
-
-    private void initButtons(JButton[] buttons) {
-        buttonsUtils.activateButtons(buttons);
-
-        for (JButton button : buttons) {
-            button.addActionListener(this);
-        }
-    }
-
     private void initButtons(){
         Buttons buttons1 = new ButtonsFactory();
         JButton[] buttons = buttons1.generateButtons(9);
@@ -157,7 +130,7 @@ public class MainWindow extends JFrame implements ActionListener {
     }
 
 
-
+    //TODO: move all those methods to separate class
     private void endGameWithWinner(String winner) {
         getClosingGameDialog().label.setText("Gratulacje!, wygrywa " + winner + " co chcesz zrobić?");
         getClosingGameDialog().displayDialog();

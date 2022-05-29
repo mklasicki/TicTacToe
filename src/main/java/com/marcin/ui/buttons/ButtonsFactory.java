@@ -18,14 +18,12 @@ public class ButtonsFactory implements Buttons {
     @Override
     public void addButtons(JFrame frame, JButton[] buttons) {
         JPanel buttonsPanel = new JPanel();
-        GridLayout gridLayout = new GridLayout(3,0);
+        GridLayout gridLayout = new GridLayout(3,3);
         buttonsPanel.setLayout(gridLayout);
-        buttonsPanel.setSize(new Dimension(316, 300));
         for(JButton button: buttons) {
             addButton(buttonsPanel, button);
         }
-        //frame.getContentPane().add(buttonsPanel);
-        frame.add(buttonsPanel);
+        frame.add(buttonsPanel, BorderLayout.CENTER);
     }
 
     @Override
