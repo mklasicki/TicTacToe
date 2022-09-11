@@ -3,15 +3,14 @@ package com.marcin.ui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.util.Properties;
 import javax.swing.*;
 
 
-import com.marcin.consts.UIConsts;
+
 import com.marcin.model.Player;
 import com.marcin.ui.dialogs.ClosingGameDialog;
 import com.marcin.ui.dialogs.PlayersDialog;
+import com.marcin.utils.ResourcesUtil;
 import com.marcin.utils.buttons.ButtonsFactory;
 import com.marcin.utils.buttons.ButtonsFactoryImpl;
 import com.marcin.utils.buttons.ButtonsUtils;
@@ -66,18 +65,8 @@ public class MainWindow extends JFrame implements ActionListener {
      * Function initializing main frame graphics properties
      * */
     private void initGraphics() {
-        Properties properties = new Properties();
-        String appConfigPath = "src/main/resources/main.properties";
-        try {
-            properties.load(new FileInputStream(appConfigPath));
-
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        setTitle(properties.getProperty("main.window.title"));
-        ImageIcon mainFrameIcon = new ImageIcon(properties.getProperty("main.icon.path"));
+        setTitle(ResourcesUtil.getResource("main.window.title"));
+        ImageIcon mainFrameIcon = new ImageIcon(ResourcesUtil.getResource("main.icon.path"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(new Dimension(316, 462));
         setResizable(false);
@@ -263,21 +252,6 @@ public class MainWindow extends JFrame implements ActionListener {
 //            && !buttons[2].getText().isEmpty()) {
 //            String winner = playerUtil.getPlayerNameByMark(buttons[2].getText(), players);
 //            endGameWithWinner(winner);
-//        }
-//    }
-
-//    enum Icons {
-//
-//        MAINFRAME("src/main/resources/Icon/tic-tac-toe.png");
-//
-//        private String path;
-//
-//        Icons(String path) {
-//            this.path = path;
-//        }
-//
-//        public String getPath() {
-//            return this.path;
 //        }
 //    }
 
