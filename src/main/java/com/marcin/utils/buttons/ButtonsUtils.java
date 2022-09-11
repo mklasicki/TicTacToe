@@ -9,4 +9,6 @@ public interface ButtonsUtils {
     void activateButtons(JButton[] buttons);
 
     void disableButtons(JButton[] buttons);
+
+    void changeButtonsBorder(JButton[] buttons);
 }

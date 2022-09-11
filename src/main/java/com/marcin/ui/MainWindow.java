@@ -1,11 +1,17 @@
 package com.marcin.ui;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.util.Properties;
 import javax.swing.*;
+
 
 import com.marcin.consts.UIConsts;
 import com.marcin.model.Player;
+import com.marcin.ui.dialogs.ClosingGameDialog;
+import com.marcin.ui.dialogs.PlayersDialog;
 import com.marcin.utils.buttons.ButtonsFactory;
 import com.marcin.utils.buttons.ButtonsFactoryImpl;
 import com.marcin.utils.buttons.ButtonsUtils;
@@ -22,6 +28,7 @@ public class MainWindow extends JFrame implements ActionListener {
     JLabel p2Name;
     JLabel p1NameText;
     JLabel p2NameText;
+    PlayersPanel playersPanel;
     PlayersDialog playersDialog;
     ClosingGameDialog closingGameDialog;
     JButton[] buttons;
@@ -33,21 +40,50 @@ public class MainWindow extends JFrame implements ActionListener {
     PlayerUtil playerUtil = new PlayerUtil();
 
 
-    public void init() {
+    public MainWindow() {
+        init();
+    }
 
-        setTitle(UIConsts.APP_TITLE);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(UIConsts.X_POS, UIConsts.Y_POS, UIConsts.APP_WIDTH, UIConsts.APP_HEIGHT);
-        setLayout(null);
 
+    /**
+     * Function initializing main frame
+     * */
+    private void init() {
+        initGraphics();
         initDialogs();
         initMenu();
-        initLabels();
+        //initLabels();
+        playersPanel = new PlayersPanel();
         buttons = buttonsFactory.generateButtons();
         players = playerUtil.createPlayers();
-        add(buttonsUtils.ButtonsPanel(buttons));
+        add(playersPanel, BorderLayout.NORTH);
+        add(buttonsUtils.ButtonsPanel(buttons), BorderLayout.CENTER);
 
         setVisible(true);
+    }
+
+    /**
+     * Function initializing main frame graphics properties
+     * */
+    private void initGraphics() {
+        Properties properties = new Properties();
+        String appConfigPath = "src/main/resources/main.properties";
+        try {
+            properties.load(new FileInputStream(appConfigPath));
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        setTitle(properties.getProperty("main.window.title"));
+        ImageIcon mainFrameIcon = new ImageIcon(properties.getProperty("main.icon.path"));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(new Dimension(316, 462));
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setIconImage(mainFrameIcon.getImage());
+        setLayout(null);
     }
 
     public ClosingGameDialog getClosingGameDialog() {
@@ -75,10 +111,11 @@ public class MainWindow extends JFrame implements ActionListener {
             button.setText(players[playerId].getMark());
             checkGame();
             if (turn == 9) {
-                endGameWithoutWinner();
+                //endGameWithoutWinner();
             }
             turn++;
         }
+
     }
 
     public JButton[] getButtons() {
@@ -94,9 +131,9 @@ public class MainWindow extends JFrame implements ActionListener {
     }
 
     private void checkGame(){
-        checkRows();
-        checkColumns();
-        checkDiagonal();
+//        checkRows();
+//        checkColumns();
+//        checkDiagonal();
     }
 
     private void initDialogs() {
@@ -149,71 +186,100 @@ public class MainWindow extends JFrame implements ActionListener {
         }
     }
 
-    private void endGameWithWinner(String winner) {
-        getClosingGameDialog().label.setText("Gratulacje!, wygrywa " + winner + " co chcesz zrobić?");
-        getClosingGameDialog().displayDialog();
-    }
+//    private void endGameWithWinner(String winner) {
+//        getClosingGameDialog().label.setText("Gratulacje!, wygrywa " + winner + " co chcesz zrobić?");
+//        getClosingGameDialog().displayDialog();
+//    }
 
-    private void endGameWithoutWinner() {
-        closingGameDialog.label.setText(UIConsts.MSG_WITHOUT_WINNER);
-        closingGameDialog.displayDialog();
-    }
+//    private void endGameWithoutWinner() {
+//        closingGameDialog.label.setText(UIConsts.MSG_WITHOUT_WINNER);
+//        closingGameDialog.displayDialog();
+//    }
 
-    private void checkRows(){
-        if ((buttons[0].getText().equals(buttons[1].getText()))
-            && (buttons[0].getText().equals(buttons[2].getText()))
-            && !buttons[0].getText().isEmpty()){
-            buttonsUtils.disableButtons(getButtons());
-            String winner = playerUtil.getPlayerNameByMark(buttons[0].getText(), players);
-            endGameWithWinner(winner);
-        }else if ((buttons[3].getText().equals(buttons[4].getText()))
-            && (buttons[3].getText().equals(buttons[5].getText()))
-            && !buttons[3].getText().isEmpty()) {
-            String winner = playerUtil.getPlayerNameByMark(buttons[3].getText(), players);
-            endGameWithWinner(winner);
-        }else if ((buttons[6].getText().equals(buttons[7].getText()))
-            && (buttons[6].getText().equals(buttons[8].getText()))
-            && !buttons[6].getText().isEmpty()) {
-            String winner = playerUtil.getPlayerNameByMark(buttons[6].getText(), players);
-            endGameWithWinner(winner);
-        }
+//    private void checkRows(){
+//        JButton[] winners = new JButton[3];
+//
+//        if ((buttons[0].getText().equals(buttons[1].getText()))
+//            && (buttons[0].getText().equals(buttons[2].getText()))
+//            && !buttons[0].getText().isEmpty()){
+//            buttonsUtils.disableButtons(getButtons());
+//            String winner = playerUtil.getPlayerNameByMark(buttons[0].getText(), players);
+//            for(int i = 0; i < 3; i++) {
+//                winners[i] = buttons[i];
+//            }
+//            buttonsUtils.changeButtonsBorder(winners);
+//            endGameWithWinner(winner);
+//        }else if ((buttons[3].getText().equals(buttons[4].getText()))
+//            && (buttons[3].getText().equals(buttons[5].getText()))
+//            && !buttons[3].getText().isEmpty()) {
+//            String winner = playerUtil.getPlayerNameByMark(buttons[3].getText(), players);
+//            winners[0] = buttons[3];
+//            winners[1] = buttons[4];
+//            winners[2] = buttons[5];
+//            buttonsUtils.changeButtonsBorder(winners);
+//            endGameWithWinner(winner);
+//        }else if ((buttons[6].getText().equals(buttons[7].getText()))
+//            && (buttons[6].getText().equals(buttons[8].getText()))
+//            && !buttons[6].getText().isEmpty()) {
+//            String winner = playerUtil.getPlayerNameByMark(buttons[6].getText(), players);
+//            winners[0] = buttons[6];
+//            winners[1] = buttons[7];
+//            winners[2] = buttons[8];
+//            buttonsUtils.changeButtonsBorder(winners);
+//            endGameWithWinner(winner);
+//        }
+//
+//    }
+//
+//    private void checkColumns() {
+//        if ((buttons[0].getText().equals(buttons[3].getText()))
+//            && (buttons[0].getText().equals(buttons[6].getText()))
+//            && !buttons[0].getText().isEmpty()){
+//            buttonsUtils.disableButtons(getButtons());
+//            String winner = playerUtil.getPlayerNameByMark(buttons[0].getText(), players);
+//            endGameWithWinner(winner);
+//        }else if ((buttons[1].getText().equals(buttons[4].getText()))
+//            && (buttons[1].getText().equals(buttons[7].getText()))
+//            && !buttons[1].getText().isEmpty()) {
+//            String winner = playerUtil.getPlayerNameByMark(buttons[1].getText(), players);
+//            endGameWithWinner(winner);
+//        }else if ((buttons[2].getText().equals(buttons[5].getText()))
+//            && (buttons[2].getText().equals(buttons[8].getText()))
+//            && !buttons[2].getText().isEmpty()) {
+//            String winner = playerUtil.getPlayerNameByMark(buttons[2].getText(), players);
+//            endGameWithWinner(winner);
+//        }
+//    }
+//
+//    private void checkDiagonal() {
+//        if ((buttons[0].getText().equals(buttons[4].getText()))
+//            && (buttons[0].getText().equals(buttons[8].getText()))
+//            && !buttons[0].getText().isEmpty()) {
+//            buttonsUtils.disableButtons(getButtons());
+//            String winner = playerUtil.getPlayerNameByMark(buttons[0].getText(), players);
+//            endGameWithWinner(winner);
+//        } else if ((buttons[2].getText().equals(buttons[4].getText()))
+//            && (buttons[2].getText().equals(buttons[6].getText()))
+//            && !buttons[2].getText().isEmpty()) {
+//            String winner = playerUtil.getPlayerNameByMark(buttons[2].getText(), players);
+//            endGameWithWinner(winner);
+//        }
+//    }
 
-    }
-
-    private void checkColumns() {
-        if ((buttons[0].getText().equals(buttons[3].getText()))
-            && (buttons[0].getText().equals(buttons[6].getText()))
-            && !buttons[0].getText().isEmpty()){
-            buttonsUtils.disableButtons(getButtons());
-            String winner = playerUtil.getPlayerNameByMark(buttons[0].getText(), players);
-            endGameWithWinner(winner);
-        }else if ((buttons[1].getText().equals(buttons[4].getText()))
-            && (buttons[1].getText().equals(buttons[7].getText()))
-            && !buttons[1].getText().isEmpty()) {
-            String winner = playerUtil.getPlayerNameByMark(buttons[1].getText(), players);
-            endGameWithWinner(winner);
-        }else if ((buttons[2].getText().equals(buttons[5].getText()))
-            && (buttons[2].getText().equals(buttons[8].getText()))
-            && !buttons[2].getText().isEmpty()) {
-            String winner = playerUtil.getPlayerNameByMark(buttons[2].getText(), players);
-            endGameWithWinner(winner);
-        }
-    }
-
-    private void checkDiagonal() {
-        if ((buttons[0].getText().equals(buttons[4].getText()))
-            && (buttons[0].getText().equals(buttons[8].getText()))
-            && !buttons[0].getText().isEmpty()) {
-            buttonsUtils.disableButtons(getButtons());
-            String winner = playerUtil.getPlayerNameByMark(buttons[0].getText(), players);
-            endGameWithWinner(winner);
-        } else if ((buttons[2].getText().equals(buttons[4].getText()))
-            && (buttons[2].getText().equals(buttons[6].getText()))
-            && !buttons[2].getText().isEmpty()) {
-            String winner = playerUtil.getPlayerNameByMark(buttons[2].getText(), players);
-            endGameWithWinner(winner);
-        }
-    }
+//    enum Icons {
+//
+//        MAINFRAME("src/main/resources/Icon/tic-tac-toe.png");
+//
+//        private String path;
+//
+//        Icons(String path) {
+//            this.path = path;
+//        }
+//
+//        public String getPath() {
+//            return this.path;
+//        }
+//    }
 
 }
 

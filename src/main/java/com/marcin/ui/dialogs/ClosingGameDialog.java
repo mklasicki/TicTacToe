@@ -1,8 +1,10 @@
-package com.marcin.ui;
+package com.marcin.ui.dialogs;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class ClosingGameDialog  extends JDialog {
+public class ClosingGameDialog  extends JDialog implements ActionListener {
 
     //TODO: create action listener for buttons
     JLabel label;
@@ -22,6 +24,8 @@ public class ClosingGameDialog  extends JDialog {
         newGame.setBounds(50, 50, 100, 30);
         quit.setBounds(180, 50, 100, 30);
 
+        quit.addActionListener(this);
+
         this.add(label);
         this.add(newGame);
         this.add(quit);
@@ -35,5 +39,14 @@ public class ClosingGameDialog  extends JDialog {
     public void closeDialog() {
         this.setVisible(false);
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == quit) {
+
+
+        }
+    }
+
 
 }

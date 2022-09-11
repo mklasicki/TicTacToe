@@ -1,7 +1,7 @@
 package com.marcin.utils.player;
 
 import com.marcin.model.Player;
-import com.marcin.ui.PlayersDialog;
+import com.marcin.ui.dialogs.PlayersDialog;
 
 public class PlayerUtil {
 

@@ -2,6 +2,7 @@ package com.marcin.utils.buttons;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 import com.marcin.consts.UIConsts;
 
@@ -50,4 +51,10 @@ public class ButtonsUtilsImpl implements ButtonsUtils {
         }
     }
 
+    @Override
+    public void changeButtonsBorder(JButton[] buttons) {
+        for(JButton button : buttons) {
+            button.setBorder(new LineBorder(Color.RED, 2));
+        }
+    }
 }

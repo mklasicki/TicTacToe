@@ -1,4 +1,4 @@
-package com.marcin.ui;
+package com.marcin.ui.dialogs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
