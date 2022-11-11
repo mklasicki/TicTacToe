@@ -30,6 +30,7 @@ public class ButtonsPanel  extends JPanel implements ActionListener {
         for (int i = 0; i < 9; i++) {
             JButton button = new JButton();
             button.addActionListener(this);
+            button.setFont(new Font("Arial,", Font.PLAIN, 35));
             buttons.add(button);
             buttonsTab[i] = button;
         }
