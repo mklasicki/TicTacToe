@@ -6,9 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 
-import com.marcin.ButtonPressedListener;
-import com.marcin.StringListener;
-import com.marcin.model.Player;
 import com.marcin.ui.dialogs.ClosingGameDialog;
 import com.marcin.ui.dialogs.PlayersDialog;
 import com.marcin.utils.ResourcesUtil;
@@ -27,7 +24,6 @@ public class MainWindow extends JFrame implements ActionListener {
     ClosingGameDialog closingGameDialog;
     ButtonsPanel buttonsPanel;
 
-    Player[] players;
     int turn;
     String mark = "M"; // do testów
 
@@ -45,13 +41,10 @@ public class MainWindow extends JFrame implements ActionListener {
         initMenu();
         playersPanel = new PlayersPanel(this);
         buttonsPanel = new ButtonsPanel(this);
-        buttonsPanel.setButtonPressedListener(new ButtonPressedListener() {
-            @Override
-            public void buttonPressed() {
-                buttonsPanel.setPlayerMark(mark);
-                checkGame();
-                turn++;
-            }
+        buttonsPanel.setButtonPressedListener(() -> {
+            buttonsPanel.setPlayerMark(mark);
+            checkGame();
+            turn++;
         });
 
 
@@ -106,13 +99,7 @@ public class MainWindow extends JFrame implements ActionListener {
         playersDialog = new PlayersDialog();
         closingGameDialog = new ClosingGameDialog();
         playersDialog.initPlayerNamesDialog(this);
-        playersDialog.setStringListener(new StringListener() {
-            @Override
-            public void getNames(String p1Name, String p2Name) {
-                playersPanel.fillNameTextFields(p1Name, p2Name);
-            }
-        });
-
+        playersDialog.setStringListener((p1Name, p2Name) -> playersPanel.fillNameTextFields(p1Name, p2Name));
         closingGameDialog.initEndGameDialog();
     }
 

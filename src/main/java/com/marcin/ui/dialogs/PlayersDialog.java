@@ -85,8 +85,4 @@ public class PlayersDialog extends JDialog implements ActionListener {
         this.setVisible(false);
     }
 
-    public String[] getPlayerNames() {
-        return this.playerNames;
-    }
-
 }
