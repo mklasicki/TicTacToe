@@ -6,12 +6,11 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 
-
+import com.marcin.StringListener;
 import com.marcin.model.Player;
 import com.marcin.ui.dialogs.ClosingGameDialog;
 import com.marcin.ui.dialogs.PlayersDialog;
 import com.marcin.utils.ResourcesUtil;
-import com.marcin.utils.player.PlayerUtil;
 
 public class MainWindow extends JFrame implements ActionListener {
     JMenuBar mainMenuBar;
@@ -30,9 +29,6 @@ public class MainWindow extends JFrame implements ActionListener {
     Player[] players;
     int turn;
 
-    PlayerUtil playerUtil = new PlayerUtil();
-
-
     public MainWindow() {
         init();
     }
@@ -45,8 +41,7 @@ public class MainWindow extends JFrame implements ActionListener {
         initGraphics();
         initDialogs();
         initMenu();
-        playersPanel = new PlayersPanel();
-        players = playerUtil.createPlayers();
+        playersPanel = new PlayersPanel(this);
         add(playersPanel, BorderLayout.NORTH);
         add(buttonsPanel, BorderLayout.CENTER);
         setVisible(true);
@@ -78,34 +73,20 @@ public class MainWindow extends JFrame implements ActionListener {
 
         if (e.getSource() == newGame) {
             turn = 1;
-           playersDialog.displayDialog();
-//           p1NameText.setText(playerUtil.getPlayerNames(playersDialog)[0]);
-//           p2NameText.setText(playerUtil.getPlayerNames(playersDialog)[1]);
-//           setPlayers(p1NameText.getName(), p2NameText.getName());
-             buttonsPanel.enableButtons();
+            playersDialog.displayDialog();
+            buttonsPanel.enableButtons();
         }
 
-        if (e.getSource().getClass() == JButton.class) {
-            JButton button = (JButton)e.getSource();
-            int playerId =  playerUtil.getCurrentPlayerIndex(turn);
-            button.setText(players[playerId].getMark());
-            checkGame();
-            if (turn == 9) {
-                //endGameWithoutWinner();
-            }
-            turn++;
-        }
+//        if (e.getSource().getClass() == JButton.class) {
+//            JButton button = (JButton)e.getSource();
+//            checkGame();
+//            if (turn == 9) {
+//                //endGameWithoutWinner();
+//            }
+//            turn++;
+//        }
 
     }
-
-
-//    private void setPlayers(String playerOneName, String playerTwoName){
-//        players[0].setName(p1NameText.getText());
-//        players[0].setMark("X");
-//        players[1].setName(p2NameText.getText());
-//        players[1].setMark("O");
-//
-//    }
 
     private void checkGame(){
 //        checkRows();
@@ -116,7 +97,14 @@ public class MainWindow extends JFrame implements ActionListener {
     private void initDialogs() {
         playersDialog = new PlayersDialog();
         closingGameDialog = new ClosingGameDialog();
-        playersDialog.initPlayerNamesDialog();
+        playersDialog.initPlayerNamesDialog(this);
+        playersDialog.setStringListener(new StringListener() {
+            @Override
+            public void getNames(String p1Name, String p2Name) {
+                playersPanel.fillNameTextFields(p1Name, p2Name);
+            }
+        });
+
         closingGameDialog.initEndGameDialog();
     }
 
@@ -144,6 +132,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         setJMenuBar(mainMenuBar);
     }
+
 
 
 //    private void endGameWithWinner(String winner) {

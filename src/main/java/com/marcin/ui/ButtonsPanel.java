@@ -9,9 +9,11 @@ public class ButtonsPanel  extends JPanel implements ActionListener {
 
     JPanel buttons = new JPanel();
     JButton[] buttonsTab;
+    JFrame parent;
 
 
     public ButtonsPanel(JFrame parent) {
+        this.parent = parent;
         init();
     }
 
@@ -56,6 +58,6 @@ public class ButtonsPanel  extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
         button.setText("X");
-
+        button.setEnabled(false);
     }
 }

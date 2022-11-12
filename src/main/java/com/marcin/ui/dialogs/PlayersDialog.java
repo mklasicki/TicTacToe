@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+import com.marcin.StringListener;
+
 public class PlayersDialog extends JDialog implements ActionListener {
 
     JLabel p1Name;
@@ -15,7 +17,9 @@ public class PlayersDialog extends JDialog implements ActionListener {
     JTextField p2TextField;
     String[] playerNames;
 
-    public void initPlayerNamesDialog() {
+    private StringListener namesListener;
+
+    public void initPlayerNamesDialog(JFrame parent) {
 
         playerNames = new String[2];
         p1Name = new JLabel("Imię pierwszego gracza: ");
@@ -56,8 +60,9 @@ public class PlayersDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitPlayers) {
-              this.playerNames[0] = p1TextField.getText();
-              this.playerNames[1] = p2TextField.getText();
+            if (namesListener != null){
+                namesListener.getNames(p1TextField.getText(), p2TextField.getText());
+            }
                this.closeDialog();
         } else if (e.getSource() == resetData) {
             p1TextField.setText("");
@@ -67,6 +72,10 @@ public class PlayersDialog extends JDialog implements ActionListener {
         }
     }
 
+
+     public void setStringListener(StringListener stringListener){
+        this.namesListener = stringListener;
+     }
 
     public void displayDialog() {
         this.setVisible(true);

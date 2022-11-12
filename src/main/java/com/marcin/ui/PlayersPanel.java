@@ -11,15 +11,15 @@ public class PlayersPanel extends JPanel {
     private JLabel p2NameText;
 
 
-    public PlayersPanel() {
+    public PlayersPanel(JFrame parent) {
         init();
     }
 
     private void init() {
         player1 = new JLabel("Gracz 1:");
         player2 = new JLabel("Gracz 2:");
-        p1NameText = new JLabel("Imie 1");
-        p2NameText = new JLabel("Imie 2");
+        p1NameText = new JLabel();
+        p2NameText = new JLabel();
 
         setLayout(new MigLayout());
         setBorder(BorderFactory.createTitledBorder("Gracze:"));
@@ -28,6 +28,11 @@ public class PlayersPanel extends JPanel {
         add(p1NameText, "wrap");
         add(player2);
         add(p2NameText);
+    }
+
+    public void  fillNameTextFields(String p1Name, String p2Name) {
+        p1NameText.setText(p1Name);
+        p2NameText.setText(p2Name);
     }
 
 }
