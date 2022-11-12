@@ -10,9 +10,6 @@ public class ResourcesUtil {
     private static Properties properties = new Properties();
 
     public static String getStringResource(String key) {
-//        Properties properties = new Properties();
-//        String mainProperties = "src/main/resources/main.properties";
-
         try {
             properties.load(new FileInputStream(MAIN_PROPERTIES));
         } catch (IOException e) {
