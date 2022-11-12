@@ -5,12 +5,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+import com.marcin.ButtonPressedListener;
+
 public class ButtonsPanel  extends JPanel implements ActionListener {
 
     JPanel buttons = new JPanel();
     JButton[] buttonsTab;
     JFrame parent;
+    private ButtonPressedListener buttonPressedListener;
+    private String playerMark;
 
+
+    public String getPlayerMark() {
+        return playerMark;
+    }
+
+    public void setPlayerMark(String playerMark) {
+        this.playerMark = playerMark;
+    }
 
     public ButtonsPanel(JFrame parent) {
         this.parent = parent;
@@ -38,6 +50,10 @@ public class ButtonsPanel  extends JPanel implements ActionListener {
         }
     }
 
+    public void setButtonPressedListener(ButtonPressedListener buttonPressedListener) {
+        this.buttonPressedListener = buttonPressedListener;
+    }
+
     public void disableButtons() {
         for(JButton b : buttonsTab) {
             b.setEnabled(false);
@@ -50,14 +66,24 @@ public class ButtonsPanel  extends JPanel implements ActionListener {
         }
     }
 
-    public JButton[] getButtonsTab() {
-        return buttonsTab;
-    }
+//    public JButton getButtonByIndex(int index) {
+//        return this.buttonsTab[index];
+//    }
+//
+//
+//    public JButton[] getButtonsTab() {
+//        return buttonsTab;
+//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JButton button = (JButton) e.getSource();
-        button.setText("X");
-        button.setEnabled(false);
+        if (buttonPressedListener != null) {
+            JButton button = (JButton) e.getSource();
+            buttonPressedListener.buttonPressed();
+            button.setText(getPlayerMark());
+            button.setEnabled(false);
+        }
+
     }
+
 }

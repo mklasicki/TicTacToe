@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 
+import com.marcin.ButtonPressedListener;
 import com.marcin.StringListener;
 import com.marcin.model.Player;
 import com.marcin.ui.dialogs.ClosingGameDialog;
@@ -24,10 +25,11 @@ public class MainWindow extends JFrame implements ActionListener {
     PlayersPanel playersPanel;
     PlayersDialog playersDialog;
     ClosingGameDialog closingGameDialog;
-    ButtonsPanel buttonsPanel = new ButtonsPanel(this);
+    ButtonsPanel buttonsPanel;
 
     Player[] players;
     int turn;
+    String mark = "M"; // do testów
 
     public MainWindow() {
         init();
@@ -42,6 +44,17 @@ public class MainWindow extends JFrame implements ActionListener {
         initDialogs();
         initMenu();
         playersPanel = new PlayersPanel(this);
+        buttonsPanel = new ButtonsPanel(this);
+        buttonsPanel.setButtonPressedListener(new ButtonPressedListener() {
+            @Override
+            public void buttonPressed() {
+                buttonsPanel.setPlayerMark(mark);
+                checkGame();
+                turn++;
+            }
+        });
+
+
         add(playersPanel, BorderLayout.NORTH);
         add(buttonsPanel, BorderLayout.CENTER);
         setVisible(true);
@@ -51,10 +64,10 @@ public class MainWindow extends JFrame implements ActionListener {
      * Function initializing main frame graphics properties
      * */
     private void initGraphics() {
-        setTitle(ResourcesUtil.getResource("main.window.title"));
-        ImageIcon mainFrameIcon = new ImageIcon(ResourcesUtil.getResource("main.icon.path"));
+        setTitle(ResourcesUtil.getStringResource("main.window.title"));
+        ImageIcon mainFrameIcon = new ImageIcon(ResourcesUtil.getStringResource("main.icon.path"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(new Dimension(316, 462));
+        setSize(new Dimension(ResourcesUtil.getIntResource("main.window.width"), ResourcesUtil.getIntResource("main.window.height")));
         setResizable(false);
         setLocationRelativeTo(null);
         setIconImage(mainFrameIcon.getImage());
@@ -76,19 +89,14 @@ public class MainWindow extends JFrame implements ActionListener {
             playersDialog.displayDialog();
             buttonsPanel.enableButtons();
         }
-
-//        if (e.getSource().getClass() == JButton.class) {
-//            JButton button = (JButton)e.getSource();
-//            checkGame();
-//            if (turn == 9) {
-//                //endGameWithoutWinner();
-//            }
-//            turn++;
-//        }
-
     }
 
     private void checkGame(){
+           System.out.println("Tura " + turn);
+            if (turn == 9) {
+                System.out.println("Koniec gry");
+                getClosingGameDialog().displayDialog();
+            }
 //        checkRows();
 //        checkColumns();
 //        checkDiagonal();
