@@ -3,34 +3,30 @@ package com.marcin.ui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import javax.swing.*;
 
 
+import com.marcin.model.Player;
 import com.marcin.ui.dialogs.ClosingGameDialog;
 import com.marcin.ui.dialogs.PlayersDialog;
 import com.marcin.utils.ResourcesUtil;
 
 public class MainWindow extends JFrame implements ActionListener {
-    JMenuBar mainMenuBar;
-    JMenu optionsMenu;
-    JMenu results;
-    JMenuItem newGame;
-    JMenuItem resetGame;
-    JMenuItem quit;
-    JMenuItem showResults;
-    JMenuItem exportResults;
+    OptionsMenu optionsMenu;
     PlayersPanel playersPanel;
+    ButtonsPanel buttonsPanel;
     PlayersDialog playersDialog;
     ClosingGameDialog closingGameDialog;
-    ButtonsPanel buttonsPanel;
-
     int turn;
-    String mark = "M"; // do testów
+
+    // mapa z graczami
+    HashMap<Integer, Player> players = new HashMap<>();
+
 
     public MainWindow() {
         init();
     }
-
 
     /**
      * Function initializing main frame
@@ -38,18 +34,21 @@ public class MainWindow extends JFrame implements ActionListener {
     private void init() {
         initGraphics();
         initDialogs();
-        initMenu();
+        optionsMenu = new OptionsMenu();
         playersPanel = new PlayersPanel(this);
         buttonsPanel = new ButtonsPanel(this);
         buttonsPanel.setButtonPressedListener(() -> {
-            buttonsPanel.setPlayerMark(mark);
+            buttonsPanel.setPlayerMark(getActivePlayerMark(players, turn));
             checkGame();
             turn++;
         });
 
-
+        setJMenuBar(optionsMenu);
         add(playersPanel, BorderLayout.NORTH);
         add(buttonsPanel, BorderLayout.CENTER);
+
+        players = generatePlayers();
+
         setVisible(true);
     }
 
@@ -73,15 +72,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == quit) {
-            this.dispose();
-        }
 
-        if (e.getSource() == newGame) {
-            turn = 1;
-            playersDialog.displayDialog();
-            buttonsPanel.enableButtons();
-        }
     }
 
     private void checkGame(){
@@ -101,31 +92,29 @@ public class MainWindow extends JFrame implements ActionListener {
         closingGameDialog.initEndGameDialog();
     }
 
-    private void initMenu(){
-        mainMenuBar = new JMenuBar();
-        results = new JMenu("Wyniki");
-        optionsMenu = new JMenu("Opcje");
-        newGame = new JMenuItem("Nowa Gra");
-        resetGame = new JMenuItem("Resetuj grę");
-        showResults = new JMenuItem("Pokaż");
-        exportResults = new JMenuItem("Eksportuj");
 
-        quit = new JMenuItem("Wyjdź");
+    private HashMap<Integer, Player> generatePlayers() {
+        Player player1 = new Player("Marcin", "O");
+        Player player2 = new Player("Stefix", "X");
 
-        quit.addActionListener(this);
-        newGame.addActionListener(this);
+        HashMap<Integer, Player> players = new HashMap<>();
+        players.put(1, player1);
+        players.put(2, player2);
 
-        optionsMenu.add(newGame);
-        optionsMenu.add(resetGame);
-        optionsMenu.add(quit);
-        results.add(showResults);
-        results.add(exportResults);
-        mainMenuBar.add(optionsMenu);
-        mainMenuBar.add(results);
-
-        setJMenuBar(mainMenuBar);
+        return  players;
     }
 
+    private String getActivePlayerMark(HashMap<Integer, Player> players, int turn) {
+        if (turn == 1) {
+            return players.get(1).getMark();
+        }
+
+        if (turn % 2 == 0) {
+            return players.get(2).getMark();
+        }
+
+        return players.get(1).getMark();
+    }
 
 
 //    private void endGameWithWinner(String winner) {

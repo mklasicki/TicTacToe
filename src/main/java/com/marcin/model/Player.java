@@ -2,17 +2,12 @@ package com.marcin.model;
 
 public class Player {
 
-    private int id;
     private String name;
     private String mark;
 
-    public Player(int id, String name) {
-        this.id = id;
+    public Player(String name, String mark) {
         this.name = name;
-    }
-
-    public int getId() {
-        return id;
+        this.mark = mark;
     }
 
     public String getName() {
