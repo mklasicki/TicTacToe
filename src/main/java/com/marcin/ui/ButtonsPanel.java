@@ -66,15 +66,6 @@ public class ButtonsPanel  extends JPanel implements ActionListener {
         }
     }
 
-//    public JButton getButtonByIndex(int index) {
-//        return this.buttonsTab[index];
-//    }
-//
-//
-//    public JButton[] getButtonsTab() {
-//        return buttonsTab;
-//    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (buttonPressedListener != null) {

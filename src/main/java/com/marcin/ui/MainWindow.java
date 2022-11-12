@@ -85,9 +85,7 @@ public class MainWindow extends JFrame implements ActionListener {
     }
 
     private void checkGame(){
-           System.out.println("Tura " + turn);
             if (turn == 9) {
-                System.out.println("Koniec gry");
                 getClosingGameDialog().displayDialog();
             }
 //        checkRows();
