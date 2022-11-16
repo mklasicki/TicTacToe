@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+import com.marcin.utils.NewGameListener;
+import com.marcin.utils.QuitGameListener;
+
 public class OptionsMenu extends JMenuBar implements ActionListener {
     private JMenu options;
     private JMenu results;
@@ -12,6 +15,8 @@ public class OptionsMenu extends JMenuBar implements ActionListener {
     private JMenuItem quit;
     private JMenuItem showResults;
     private JMenuItem exportResults;
+    private NewGameListener newGameListener;
+    private QuitGameListener quitGameListener;
 
     public OptionsMenu() {
         init();
@@ -41,15 +46,22 @@ public class OptionsMenu extends JMenuBar implements ActionListener {
 
     }
 
+    public void setNegGameListener(NewGameListener negGameListener) {
+        this.newGameListener = negGameListener;
+    }
+
+    public void setQuitGameListener(QuitGameListener quitGameListener) {
+        this.quitGameListener = quitGameListener;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == quit) {
-            System.out.println("wybrano wyjscie z gry");
-            //            this.dispose();
+         quitGameListener.quitGame();
         }
 
         if (e.getSource() == newGame) {
-            System.out.println("Wybrano nowa gre");
+            newGameListener.startNewGame();
             //            turn = 1;
 //            playersDialog.displayDialog();
 //            buttonsPanel.enableButtons();
