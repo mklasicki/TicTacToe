@@ -7,9 +7,12 @@ import java.util.HashMap;
 import javax.swing.*;
 
 
+import com.marcin.model.GameEngine;
 import com.marcin.model.Player;
 import com.marcin.ui.dialogs.ClosingGameDialog;
 import com.marcin.ui.dialogs.PlayersDialog;
+import com.marcin.utils.NewGameListener;
+import com.marcin.utils.QuitGameListener;
 import com.marcin.utils.ResourcesUtil;
 
 public class MainWindow extends JFrame implements ActionListener {
@@ -23,6 +26,9 @@ public class MainWindow extends JFrame implements ActionListener {
     // mapa z graczami
     HashMap<Integer, Player> players = new HashMap<>();
 
+    // silnik gry
+    GameEngine gameEngine = new GameEngine();
+
 
     public MainWindow() {
         init();
@@ -35,12 +41,29 @@ public class MainWindow extends JFrame implements ActionListener {
         initGraphics();
         initDialogs();
         optionsMenu = new OptionsMenu();
+        optionsMenu.setNegGameListener(new NewGameListener() {
+            @Override
+            public void startNewGame() {
+                playersDialog.displayDialog();
+                buttonsPanel.enableButtons();
+            }
+        });
+
+        optionsMenu.setQuitGameListener(new QuitGameListener() {
+            @Override
+            public void quitGame() {
+                showConfirmDialog();
+            }
+        });
+
         playersPanel = new PlayersPanel(this);
         buttonsPanel = new ButtonsPanel(this);
         buttonsPanel.setButtonPressedListener(() -> {
             buttonsPanel.setPlayerMark(getActivePlayerMark(players, turn));
             checkGame();
+            gameEngine.checkGame(turn);
             turn++;
+            System.out.println("Tura: " + turn);
         });
 
         setJMenuBar(optionsMenu);
@@ -88,7 +111,7 @@ public class MainWindow extends JFrame implements ActionListener {
         playersDialog = new PlayersDialog();
         closingGameDialog = new ClosingGameDialog();
         playersDialog.initPlayerNamesDialog(this);
-        playersDialog.setStringListener((p1Name, p2Name) -> playersPanel.fillNameTextFields(p1Name, p2Name));
+        playersDialog.setPlayersNamesListener((p1Name, p2Name) -> playersPanel.fillNameTextFields(p1Name, p2Name));
         closingGameDialog.initEndGameDialog();
     }
 
@@ -116,86 +139,12 @@ public class MainWindow extends JFrame implements ActionListener {
         return players.get(1).getMark();
     }
 
-
-//    private void endGameWithWinner(String winner) {
-//        getClosingGameDialog().label.setText("Gratulacje!, wygrywa " + winner + " co chcesz zrobić?");
-//        getClosingGameDialog().displayDialog();
-//    }
-
-//    private void endGameWithoutWinner() {
-//        closingGameDialog.label.setText(UIConsts.MSG_WITHOUT_WINNER);
-//        closingGameDialog.displayDialog();
-//    }
-
-//    private void checkRows(){
-//        JButton[] winners = new JButton[3];
-//
-//        if ((buttons[0].getText().equals(buttons[1].getText()))
-//            && (buttons[0].getText().equals(buttons[2].getText()))
-//            && !buttons[0].getText().isEmpty()){
-//            buttonsUtils.disableButtons(getButtons());
-//            String winner = playerUtil.getPlayerNameByMark(buttons[0].getText(), players);
-//            for(int i = 0; i < 3; i++) {
-//                winners[i] = buttons[i];
-//            }
-//            buttonsUtils.changeButtonsBorder(winners);
-//            endGameWithWinner(winner);
-//        }else if ((buttons[3].getText().equals(buttons[4].getText()))
-//            && (buttons[3].getText().equals(buttons[5].getText()))
-//            && !buttons[3].getText().isEmpty()) {
-//            String winner = playerUtil.getPlayerNameByMark(buttons[3].getText(), players);
-//            winners[0] = buttons[3];
-//            winners[1] = buttons[4];
-//            winners[2] = buttons[5];
-//            buttonsUtils.changeButtonsBorder(winners);
-//            endGameWithWinner(winner);
-//        }else if ((buttons[6].getText().equals(buttons[7].getText()))
-//            && (buttons[6].getText().equals(buttons[8].getText()))
-//            && !buttons[6].getText().isEmpty()) {
-//            String winner = playerUtil.getPlayerNameByMark(buttons[6].getText(), players);
-//            winners[0] = buttons[6];
-//            winners[1] = buttons[7];
-//            winners[2] = buttons[8];
-//            buttonsUtils.changeButtonsBorder(winners);
-//            endGameWithWinner(winner);
-//        }
-//
-//    }
-//
-//    private void checkColumns() {
-//        if ((buttons[0].getText().equals(buttons[3].getText()))
-//            && (buttons[0].getText().equals(buttons[6].getText()))
-//            && !buttons[0].getText().isEmpty()){
-//            buttonsUtils.disableButtons(getButtons());
-//            String winner = playerUtil.getPlayerNameByMark(buttons[0].getText(), players);
-//            endGameWithWinner(winner);
-//        }else if ((buttons[1].getText().equals(buttons[4].getText()))
-//            && (buttons[1].getText().equals(buttons[7].getText()))
-//            && !buttons[1].getText().isEmpty()) {
-//            String winner = playerUtil.getPlayerNameByMark(buttons[1].getText(), players);
-//            endGameWithWinner(winner);
-//        }else if ((buttons[2].getText().equals(buttons[5].getText()))
-//            && (buttons[2].getText().equals(buttons[8].getText()))
-//            && !buttons[2].getText().isEmpty()) {
-//            String winner = playerUtil.getPlayerNameByMark(buttons[2].getText(), players);
-//            endGameWithWinner(winner);
-//        }
-//    }
-//
-//    private void checkDiagonal() {
-//        if ((buttons[0].getText().equals(buttons[4].getText()))
-//            && (buttons[0].getText().equals(buttons[8].getText()))
-//            && !buttons[0].getText().isEmpty()) {
-//            buttonsUtils.disableButtons(getButtons());
-//            String winner = playerUtil.getPlayerNameByMark(buttons[0].getText(), players);
-//            endGameWithWinner(winner);
-//        } else if ((buttons[2].getText().equals(buttons[4].getText()))
-//            && (buttons[2].getText().equals(buttons[6].getText()))
-//            && !buttons[2].getText().isEmpty()) {
-//            String winner = playerUtil.getPlayerNameByMark(buttons[2].getText(), players);
-//            endGameWithWinner(winner);
-//        }
-//    }
+    public void showConfirmDialog() {
+        if (JOptionPane.showConfirmDialog(this, "Czy na pewno chcesz opuscic gre?",
+            "Ostrzeżenie,",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+         dispose();
+        }
+    }
 
 }
 
