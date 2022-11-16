@@ -1,5 +1,5 @@
 package com.marcin;
 
-public interface StringListener {
+public interface PlayersNamesListener {
     void getNames(String p1Name, String p2Name);
 }

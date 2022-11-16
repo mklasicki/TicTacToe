@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-import com.marcin.StringListener;
+import com.marcin.PlayersNamesListener;
 
 public class PlayersDialog extends JDialog implements ActionListener {
 
@@ -17,7 +17,7 @@ public class PlayersDialog extends JDialog implements ActionListener {
     JTextField p2TextField;
     String[] playerNames;
 
-    private StringListener namesListener;
+    private PlayersNamesListener namesListener;
 
     public void initPlayerNamesDialog(JFrame parent) {
 
@@ -74,7 +74,7 @@ public class PlayersDialog extends JDialog implements ActionListener {
     }
 
 
-     public void setStringListener(StringListener stringListener){
+     public void setPlayersNamesListener(PlayersNamesListener stringListener){
         this.namesListener = stringListener;
      }
 
