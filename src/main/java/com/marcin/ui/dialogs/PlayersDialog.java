@@ -1,61 +1,27 @@
 package com.marcin.ui.dialogs;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import com.marcin.PlayersNamesListener;
+import net.miginfocom.swing.MigLayout;
 
 public class PlayersDialog extends JDialog implements ActionListener {
 
-    JLabel p1Name;
-    JLabel p2Name;
+
     JButton submitPlayers;
     JButton resetData;
     JButton quit;
     JTextField p1TextField;
     JTextField p2TextField;
-    String[] playerNames;
 
     private PlayersNamesListener namesListener;
 
-    public void initPlayerNamesDialog(JFrame parent) {
-
-        playerNames = new String[2];
-        p1Name = new JLabel("Imię pierwszego gracza: ");
-        p2Name = new JLabel("Imie drugiego gracza: ");
-        submitPlayers = new JButton("Zatwierdź");
-        resetData = new JButton("Resetuj");
-        quit = new JButton("Wyjdź");
-        p1TextField = new JTextField();
-        p2TextField = new JTextField();
-
-        p1Name.setBounds(10, 10, 200, 20);
-        p2Name.setBounds(10, 40, 200, 20);
-
-        p1TextField.setBounds(250, 10, 100, 20);
-        p2TextField.setBounds(250, 40, 100, 20);
-
-        submitPlayers.setBounds(10, 80, 100, 30);
-        resetData.setBounds(130, 80, 100, 30);
-        quit.setBounds(250, 80,100, 30);
-
-        submitPlayers.addActionListener(this);
-        resetData.addActionListener(this);
-        quit.addActionListener(this);
-
-        this.setModal(true);
-        this.setLayout(null);
-        this.setTitle("Imiona graczy");
-        this.setBounds(400, 400, 380, 160);
-        this.setLocationRelativeTo(parent);
-        this.add(p1Name);
-        this.add(p2Name);
-        this.add(p1TextField);
-        this.add(p2TextField);
-        this.add(submitPlayers);
-        this.add(resetData);
-        this.add(quit);
+    public PlayersDialog(JFrame owner, String title) {
+        super(owner, title);
+        init();
     }
 
     @Override
@@ -73,10 +39,51 @@ public class PlayersDialog extends JDialog implements ActionListener {
         }
     }
 
+    private void  init() {
+        setModal(true);
+        setSize(new Dimension(300, 150));
+        setLayout(new BorderLayout());
+        setLocationRelativeTo(getOwner());
 
-     public void setPlayersNamesListener(PlayersNamesListener stringListener){
+        add(playersForm(), BorderLayout.CENTER);
+        add(buttonsPanel(), BorderLayout.SOUTH);
+    }
+
+    private JPanel playersForm() {
+        JPanel nameFormPanel = new JPanel();
+        nameFormPanel.setLayout(new MigLayout("wrap 2", "[][grow, fill]"));
+
+        JLabel p1Name = new JLabel("Imię pierwszego gracza: ");
+        JLabel p2Name = new JLabel("Imie drugiego gracza: ");
+        JTextField p1TextField = new JTextField();
+        JTextField p2TextField = new JTextField();
+
+        nameFormPanel.add(p1Name);
+        nameFormPanel.add(p1TextField);
+        nameFormPanel.add(p2Name);
+        nameFormPanel.add(p2TextField);
+
+        return nameFormPanel;
+    }
+
+    private JPanel buttonsPanel() {
+        JPanel buttonsPanel = new JPanel();
+        JButton submit = new JButton("Zatwierdź");
+        JButton reset = new JButton("Resetuj");
+        JButton quit = new JButton("Wyjdź");
+
+        buttonsPanel.setLayout(new MigLayout("","[grow, fill] [grow, fill] [grow, fill]"));
+        buttonsPanel.add(submit);
+        buttonsPanel.add(reset);
+        buttonsPanel.add(quit);
+
+        return buttonsPanel;
+    }
+
+
+    public void setPlayersNamesListener(PlayersNamesListener stringListener){
         this.namesListener = stringListener;
-     }
+    }
 
     public void displayDialog() {
         this.setVisible(true);
