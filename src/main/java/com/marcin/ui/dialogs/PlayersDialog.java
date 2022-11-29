@@ -59,7 +59,10 @@ public class PlayersDialog extends JDialog {
                 JOptionPane.showMessageDialog(PlayersDialog.this, "Pola z imionami nie moga być puste", "Błąd", JOptionPane.ERROR_MESSAGE);
             }
                  else {
-                System.out.println("można wykonac akcję");
+                if (namesListener != null) {
+                    namesListener.getNames(p1TextField.getText(), p2TextField.getText());
+                    closeDialog();
+                }
             }
         });
 
@@ -87,13 +90,10 @@ public class PlayersDialog extends JDialog {
     }
 
     private boolean validateTextField(JTextField textField) {
-
         if (textField.getText().length() == 0 || textField.getText().isEmpty()){
             return false;
         }
-
         return true;
-
     }
 
     public void setPlayersNamesListener(PlayersNamesListener stringListener){
@@ -105,7 +105,7 @@ public class PlayersDialog extends JDialog {
     }
 
     public void closeDialog() {
-        this.setVisible(false);
+        dispose();
     }
 
 }
