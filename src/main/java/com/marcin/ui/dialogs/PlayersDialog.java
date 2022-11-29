@@ -8,12 +8,9 @@ import javax.swing.*;
 import com.marcin.PlayersNamesListener;
 import net.miginfocom.swing.MigLayout;
 
-public class PlayersDialog extends JDialog implements ActionListener {
+public class PlayersDialog extends JDialog {
 
 
-    JButton submitPlayers;
-    JButton resetData;
-    JButton quit;
     JTextField p1TextField;
     JTextField p2TextField;
 
@@ -22,21 +19,6 @@ public class PlayersDialog extends JDialog implements ActionListener {
     public PlayersDialog(JFrame owner, String title) {
         super(owner, title);
         init();
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == submitPlayers) {
-            if (namesListener != null){
-                namesListener.getNames(p1TextField.getText(), p2TextField.getText());
-            }
-               this.closeDialog();
-        } else if (e.getSource() == resetData) {
-            p1TextField.setText("");
-            p2TextField.setText("");
-        } else if (e.getSource() == quit) {
-            this.closeDialog();
-        }
     }
 
     private void  init() {
@@ -55,8 +37,8 @@ public class PlayersDialog extends JDialog implements ActionListener {
 
         JLabel p1Name = new JLabel("Imię pierwszego gracza: ");
         JLabel p2Name = new JLabel("Imie drugiego gracza: ");
-        JTextField p1TextField = new JTextField();
-        JTextField p2TextField = new JTextField();
+        p1TextField = new JTextField();
+        p2TextField = new JTextField();
 
         nameFormPanel.add(p1Name);
         nameFormPanel.add(p1TextField);
@@ -72,6 +54,30 @@ public class PlayersDialog extends JDialog implements ActionListener {
         JButton reset = new JButton("Resetuj");
         JButton quit = new JButton("Wyjdź");
 
+        submit.addActionListener(e -> {
+            if (!validateTextField(p1TextField) || (!validateTextField(p2TextField))) {
+                JOptionPane.showMessageDialog(PlayersDialog.this, "Pola z imionami nie moga być puste", "Błąd", JOptionPane.ERROR_MESSAGE);
+            }
+                 else {
+                System.out.println("można wykonac akcję");
+            }
+        });
+
+        reset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                p1TextField.setText("");
+                p2TextField.setText("");
+            }
+        });
+
+        quit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                closeDialog();
+            }
+        });
+
         buttonsPanel.setLayout(new MigLayout("","[grow, fill] [grow, fill] [grow, fill]"));
         buttonsPanel.add(submit);
         buttonsPanel.add(reset);
@@ -80,6 +86,15 @@ public class PlayersDialog extends JDialog implements ActionListener {
         return buttonsPanel;
     }
 
+    private boolean validateTextField(JTextField textField) {
+
+        if (textField.getText().length() == 0 || textField.getText().isEmpty()){
+            return false;
+        }
+
+        return true;
+
+    }
 
     public void setPlayersNamesListener(PlayersNamesListener stringListener){
         this.namesListener = stringListener;
